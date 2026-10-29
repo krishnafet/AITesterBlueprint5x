@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Draft Test Plan - KAN-4</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #19333a;
+      --muted: #52666a;
+      --line: #cfddda;
+      --teal: #008c83;
+      --teal-dark: #006d68;
+      --mint: #e8f5f2;
+      --amber: #fff3d8;
+      --red: #fbe9e7;
+      --paper: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 10pt/1.48 "Aptos", "Segoe UI", sans-serif;
+    }
+    .page { max-width: 900px; margin: 0 auto; padding: 28px 34px 40px; }
+    .brand { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 2px solid var(--teal); padding-bottom: 14px; }
+    .brand img { width: 143px; height: auto; }
+    .brand-note { color: var(--muted); font-size: 8.5pt; text-align: right; }
+    .eyebrow { margin: 22px 0 4px; color: var(--teal-dark); font-size: 8pt; font-weight: 700; text-transform: uppercase; }
+    h1 { margin: 0; font-size: 25pt; line-height: 1.12; letter-spacing: 0; }
+    .subtitle { margin: 8px 0 16px; color: var(--muted); font-size: 12pt; }
+    .status { display: inline-block; padding: 5px 9px; border: 1px solid #d5a43a; background: var(--amber); color: #714d00; font-size: 8pt; font-weight: 700; }
+    .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 18px 0 20px; background: var(--line); border: 1px solid var(--line); }
+    .meta div { min-height: 54px; padding: 8px 10px; background: #f5f9f8; }
+    .meta strong { display: block; color: var(--muted); font-size: 7.5pt; text-transform: uppercase; }
+    .meta span { display: block; margin-top: 3px; font-size: 9pt; font-weight: 600; }
+    h2 { margin: 25px 0 10px; padding-bottom: 5px; border-bottom: 1px solid var(--line); color: var(--teal-dark); font-size: 15pt; break-after: avoid; }
+    h3 { margin: 15px 0 5px; font-size: 11pt; break-after: avoid; }
+    p { margin: 5px 0 9px; }
+    ul, ol { margin: 5px 0 10px; padding-left: 20px; }
+    li { margin: 3px 0; }
+    table { width: 100%; margin: 9px 0 14px; border-collapse: collapse; font-size: 8.2pt; }
+    th { padding: 7px 8px; background: #e8f2f0; color: #173c40; text-align: left; font-weight: 700; }
+    td { padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    tr { break-inside: avoid; }
+    .checklist th:first-child { width: 23%; }
+    .checklist th:nth-child(2) { width: 13%; }
+    .scenarios th:nth-child(1) { width: 8%; }
+    .scenarios th:nth-child(2) { width: 8%; }
+    .scenarios th:nth-child(3) { width: 13%; }
+    .scenarios th:nth-child(5) { width: 19%; }
+    .status-present { color: #006d47; font-weight: 700; }
+    .status-partial { color: #8a5a00; font-weight: 700; }
+    .status-missing { color: #a1332d; font-weight: 700; }
+    .callout { margin: 10px 0 14px; padding: 10px 12px; border-left: 3px solid var(--teal); background: var(--mint); }
+    .quiet { color: var(--muted); }
+    .review { margin-top: 20px; padding: 13px 15px; border: 1.5px solid var(--teal); background: #f4faf8; break-inside: avoid; }
+    .review h2 { margin-top: 0; }
+    .footer { margin-top: 28px; padding-top: 8px; border-top: 1px solid var(--line); color: var(--muted); font-size: 7.5pt; }
+    @page { size: A4; margin: 15mm 14mm 17mm; }
+    @media print {
+      .page { max-width: none; padding: 0; }
+      h2 { break-after: avoid; }
+      thead { display: table-header-group; }
+      .footer { position: fixed; bottom: -10mm; left: 0; right: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="brand">
+      <img src="../test-plan-creator-skill-advance/misc/company.png" alt="Nagarro">
+      <div class="brand-note">Quality Engineering<br>Test Planning</div>
+    </header>
+
+    <p class="eyebrow">Jira Story / Authentication</p>
+    <h1>Test Plan: KAN-4</h1>
+    <p class="subtitle">Add Passkey and SSO Login Options to VWO Login Page</p>
+    <span class="status">DRAFT - PENDING HUMAN REVIEW</span>
+
+    <section class="meta" aria-label="Ticket details">
+      <div><strong>Issue</strong><span>KAN-4</span></div>
+      <div><strong>Type / Priority</strong><span>Story / High</span></div>
+      <div><strong>Prepared</strong><span>2026-10-28</span></div>
+      <div><strong>Components</strong><span>Not provided</span></div>
+    </section>
+    <p class="quiet"><strong>Ticket metadata:</strong> Labels, fix versions, linked issues, and attachments were not returned for this Jira issue. Company details beyond the Nagarro logo were not available in the provided company-details file.</p>
+
+    <h2>1. Scope &amp; Objectives</h2>
+    <p><strong>Purpose:</strong> Assess the change that adds SSO and passkey sign-in choices to the existing VWO login page.</p>
+    <p><strong>Objective:</strong> Verify placement and behavior of both options, successful and unsuccessful authentication, passkey availability and device support, safe handling of authentication data, and regressions to existing login options.</p>
+    <p><strong>Scope of testing:</strong> The login-page options and authentication journeys described in KAN-4, including UI visibility, SSO, passkey, error handling, compatibility, security, and the ticket's stated staging Definition of Done.</p>
+    <p><strong>In scope:</strong></p>
+    <ul>
+      <li>Both new buttons appear below "Sign in with Google".</li>
+      <li>Successful and failed SSO authentication, including configured identity providers.</li>
+      <li>Successful passkey authentication, no registered passkey, verification failure, and unsupported browser/device behavior.</li>
+      <li>Responsive presentation, accessibility checks, security protocol use, and exposure of sensitive data in UI or network logs.</li>
+      <li>Regression smoke checks for existing login methods on the same page.</li>
+    </ul>
+    <p><strong>Out of scope:</strong> Passkey registration and SSO provider configuration, both explicitly excluded by the story.</p>
+    <p><strong>Deliverables:</strong> This draft test plan and, after review, execution evidence and defect records linked to KAN-4.</p>
+
+    <h2>2. Gaps &amp; Questions for the Author</h2>
+    <p>Checklist status reflects the ticket as fetched. Every partial or missing item below needs clarification or an agreed test oracle before sign-off.</p>
+    <table class="checklist">
+      <thead><tr><th>Checklist area</th><th>Status</th><th>Finding / question for author</th></tr></thead>
+      <tbody>
+        <tr><td>Clear user story / goal</td><td class="status-present">PRESENT</td><td>Story states the user goal: secure, convenient sign-in using SSO or passkey.</td></tr>
+        <tr><td>Testable acceptance criteria</td><td class="status-partial">PARTIAL</td><td>Core outcomes are observable, but exact error text, redirect destination behavior, and supported-provider/browser sets are unspecified. What are the pass/fail oracles?</td></tr>
+        <tr><td>Happy path</td><td class="status-present">PRESENT</td><td>Successful SSO and verified registered-passkey login should reach the dashboard.</td></tr>
+        <tr><td>Negative / error paths</td><td class="status-partial">PARTIAL</td><td>Failure types are named, but expected messages, retry behavior, and recovery paths are not. What should the user see and be able to do after each failure?</td></tr>
+        <tr><td>Boundary &amp; empty states</td><td class="status-partial">PARTIAL</td><td>No-passkey is covered; empty/expired SSO state, cancellation, timeout, repeated attempts, and rate-limit behavior are not specified. Which are in scope?</td></tr>
+        <tr><td>State transitions</td><td class="status-partial">PARTIAL</td><td>Click, authentication, and dashboard outcomes are stated. Expected behavior for cancel, retry, back navigation, and interrupted redirects is unclear.</td></tr>
+        <tr><td>Test data</td><td class="status-missing">MISSING</td><td>Provide staging accounts, SSO test identities for each configured provider, and passkey-registered / no-passkey accounts.</td></tr>
+        <tr><td>Environment / flags</td><td class="status-partial">PARTIAL</td><td>Staging is named in DoD, but the environment URL, feature flags, and configuration are not. Which build and flags should QA use?</td></tr>
+        <tr><td>External dependencies</td><td class="status-partial">PARTIAL</td><td>SSO providers and passkey-capable platform support are dependencies, but providers and service owners are not identified. Which IdPs are configured?</td></tr>
+        <tr><td>Preconditions / setup</td><td class="status-partial">PARTIAL</td><td>Valid SSO credentials and an available registered passkey are referenced. How are accounts, provider state, and passkey fixtures provisioned in staging?</td></tr>
+        <tr><td>Performance / load</td><td class="status-missing">MISSING</td><td>No authentication latency or load expectation is specified. Are response-time or concurrency targets required?</td></tr>
+        <tr><td>Security / authorization</td><td class="status-partial">PARTIAL</td><td>Secure protocols and no sensitive-data exposure are required. Which OAuth/SAML/WebAuthn flows, session controls, and user/role permissions must be verified?</td></tr>
+        <tr><td>Accessibility</td><td class="status-partial">PARTIAL</td><td>Accessibility is named in the test-scenario list, but no standard or acceptance criteria are given. Which conformance target applies?</td></tr>
+        <tr><td>Internationalization</td><td class="status-missing">MISSING</td><td>No supported locales, translations, or text-expansion requirements are stated. Is localization in scope?</td></tr>
+        <tr><td>Audit / logging</td><td class="status-partial">PARTIAL</td><td>Secrets must not appear in UI or network logs, but audit events and safe diagnostic logging are not defined. What should be logged, and where?</td></tr>
+        <tr><td>Existing-feature impact</td><td class="status-partial">PARTIAL</td><td>New methods are added alongside existing methods, but regression coverage is not explicit. Confirm Google and email/password login remain unchanged.</td></tr>
+        <tr><td>Backward compatibility / migration</td><td class="status-partial">PARTIAL</td><td>No migration is described. Confirm whether older supported browsers or existing accounts need compatibility coverage.</td></tr>
+        <tr><td>Browser / device matrix</td><td class="status-partial">PARTIAL</td><td>"Supported browsers/devices" is not enumerated. Provide the required browser, OS, and authenticator matrix.</td></tr>
+        <tr><td>Rollback / feature flag</td><td class="status-missing">MISSING</td><td>No disable/rollback behavior is described. Is a feature flag used, and what should users see when it is off?</td></tr>
+        <tr><td>Unambiguous wording</td><td class="status-partial">PARTIAL</td><td>"Appropriate error messages", "smooth", "supported", and "all configured" need defined expected behavior and lists.</td></tr>
+        <tr><td>Defined terminology</td><td class="status-partial">PARTIAL</td><td>SSO, provider, passkey availability, and verification are used without provider or protocol-specific details. Confirm intended flows.</td></tr>
+        <tr><td>Design / mockup</td><td class="status-missing">MISSING</td><td>No design attachment was returned. Provide the approved login-page design or confirm the current page is the source of truth.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>3. Test Scenarios</h2>
+    <p>Priorities are proposed risk-based priorities, not values assigned by the ticket. Scenario IDs below map directly to the ticket criteria or explicitly identified gaps.</p>
+    <table class="scenarios">
+      <thead><tr><th>ID</th><th>Priority</th><th>Type</th><th>Scenario</th><th>Maps to</th></tr></thead>
+      <tbody>
+        <tr><td>TS-01</td><td>P1</td><td>Positive / UI</td><td>Open the login page and verify both new buttons are visible, correctly labeled, and positioned below "Sign in with Google".</td><td>AC: UI Visibility</td></tr>
+        <tr><td>TS-02</td><td>P0</td><td>Positive / E2E</td><td>For each configured SSO provider, sign in with valid test credentials; verify successful authentication and arrival at the dashboard.</td><td>AC: SSO Login Flow; Compatibility</td></tr>
+        <tr><td>TS-03</td><td>P1</td><td>Negative</td><td>Attempt SSO with invalid credentials; verify authentication is rejected, the agreed error is displayed, and no authenticated session is created.</td><td>AC: SSO Login Flow; Error Handling; Gap: error oracle</td></tr>
+        <tr><td>TS-04</td><td>P0</td><td>Positive / E2E</td><td>On each agreed supported browser/device, sign in with a registered and successfully verified passkey; verify the user reaches the dashboard.</td><td>AC: Passkey Login Flow; Compatibility</td></tr>
+        <tr><td>TS-05</td><td>P1</td><td>Boundary / Empty</td><td>Attempt passkey sign-in for an account with no registered passkey; verify the specified fallback or guidance appears and no session is created.</td><td>AC: Passkey Login Flow</td></tr>
+        <tr><td>TS-06</td><td>P1</td><td>Negative</td><td>Make passkey verification fail or cancel it; verify the agreed failure message and recovery behavior, without falsely authenticating the user.</td><td>AC: Error Handling; Gap: cancellation/retry behavior</td></tr>
+        <tr><td>TS-07</td><td>P1</td><td>Negative / Compatibility</td><td>Use a browser/device outside the confirmed passkey support matrix; verify a clear unsupported-platform message and usable alternative login methods.</td><td>AC: Error Handling; Compatibility; Gap: support matrix</td></tr>
+        <tr><td>TS-08</td><td>P0</td><td>Security</td><td>Inspect SSO and passkey exchanges to confirm the approved OAuth/SAML/WebAuthn protocols are used and authentication material is not exposed in UI, URLs, or network logs.</td><td>AC: Security; Gap: exact protocol and logging oracle</td></tr>
+        <tr><td>TS-09</td><td>P1</td><td>Regression</td><td>Verify existing Google and email/password sign-in remain available and their successful and failed flows are not regressed by the new options.</td><td>Ticket: options added alongside existing methods; Gap: regression scope</td></tr>
+        <tr><td>TS-10</td><td>P1</td><td>Positive / UI</td><td>Check layout at agreed viewport sizes and supported devices; verify both options remain readable and operable without obscuring existing controls.</td><td>Ticket test scenario: responsiveness; Gap: viewport matrix</td></tr>
+        <tr><td>TS-11</td><td>P1</td><td>Accessibility</td><td>Keyboard-navigate to and activate both buttons; verify accessible names, focus visibility, and screen-reader announcements against the agreed accessibility target.</td><td>Ticket test scenario: accessibility; Gap: conformance target</td></tr>
+        <tr><td>TS-12</td><td>P1</td><td>Security / Boundary</td><td>Exercise agreed interruption and retry cases (cancel, timeout, back navigation); verify no partial or stale authenticated session remains.</td><td>AC: Security; Gap: state transitions and recovery</td></tr>
+      </tbody>
+    </table>
+
+    <h2>4. Test Data &amp; Environment</h2>
+    <ul>
+      <li><strong>Environment:</strong> Staging is specified by the Definition of Done; URL, build, and feature-flag state must be supplied by the team.</li>
+      <li><strong>Data:</strong> Dedicated SSO identities for each configured provider; a valid account with a registered passkey; an account without a registered passkey; invalid-credential and failed-verification conditions.</li>
+      <li><strong>Platforms:</strong> Product-approved supported and unsupported browser/device combinations, including relevant operating systems and authenticators.</li>
+      <li><strong>Roles / permissions:</strong> KAN-4 does not define roles or permission differences. Author confirmation is required before role-specific coverage is added.</li>
+      <li><strong>Handling:</strong> Use non-production accounts and synthetic test identities. Never place secrets or real user credentials in screenshots, logs, or defect reports.</li>
+    </ul>
+
+    <h2>5. Risks &amp; Assumptions</h2>
+    <p><strong>Assumptions made:</strong> The dashboard is the expected destination for both successful sign-in flows; staging is the execution environment because it is named in DoD; existing Google and email/password methods remain in scope for regression because the new choices are described as additions.</p>
+    <p><strong>Risks:</strong> An undefined support matrix can leave browser/device gaps; unspecified SSO providers limit integration coverage; vague error expectations can produce inconsistent acceptance decisions; authentication defects can create account-access or sensitive-data exposure risks.</p>
+
+    <h2>6. Entry / Exit Criteria</h2>
+    <p><strong>Entry:</strong> KAN-4 implementation is deployed to the agreed staging build; required providers and flags are configured; QA test identities and passkey fixtures are ready; supported platform matrix and error expectations are agreed; test accounts are accessible.</p>
+    <p><strong>Exit:</strong> All agreed scenarios have recorded results; ticket acceptance criteria pass or have linked defects; no open critical/high defects remain per DoD; security checks confirm no sensitive data exposure; deviations and blocked tests are documented; QA owner completes sign-off.</p>
+
+    <h2>7. Test Strategy</h2>
+    <ul>
+      <li><strong>Testing levels:</strong> UI verification, authentication integration checks, end-to-end system acceptance, browser/device compatibility, accessibility, and focused security validation.</li>
+      <li><strong>System acceptance:</strong> Both options are presented in the required order; successful supported flows reach the dashboard; failure and unsupported states provide agreed guidance; security requirements are met.</li>
+      <li><strong>Team composition:</strong> QA owner, login/authentication implementation owner, and SSO/identity-provider contact for configuration and test-account support.</li>
+    </ul>
+
+    <h2>8. Test Approach</h2>
+    <ul>
+      <li><strong>Test design:</strong> Requirement-based scenarios mapped to the ticket's UI, SSO, passkey, error, compatibility, and security criteria; supplement with gap-driven exploratory checks after author decisions.</li>
+      <li><strong>Test data strategy:</strong> Isolated staging identities and controlled account states; use provider-approved test credentials and registered test authenticators only.</li>
+      <li><strong>Test data management:</strong> Keep credentials in approved secret storage; reset or clean up test sessions after execution; redact tokens and personal data from evidence.</li>
+    </ul>
+
+    <h2>9. Bug Tracking Process</h2>
+    <ul>
+      <li><strong>Tool:</strong> Jira, with defects linked to KAN-4 (confirm project workflow and issue type).</li>
+      <li><strong>Priority / severity:</strong> Assign using the team's Jira definitions. Treat inability to authenticate or a security exposure as release-blocking candidates pending triage; do not infer the team's exact scale.</li>
+      <li><strong>Reporting:</strong> Include build, environment, browser/device, test identity state, steps, expected vs. actual result, and sanitized evidence. Never attach credentials, tokens, or unredacted sensitive logs.</li>
+    </ul>
+
+    <h2>10. Assumptions and Dependencies</h2>
+    <ul>
+      <li><strong>Assumptions:</strong> Successful authentication ends at the dashboard; KAN-4 does not include passkey registration or SSO provider setup; the supplied ticket description and acceptance criteria are the source of truth.</li>
+      <li><strong>Dependencies:</strong> Staging deployment; configured SSO providers; identity-provider test accounts; passkey-capable devices and authenticators; agreed browser/device support list; approved security and accessibility criteria.</li>
+    </ul>
+
+    <section class="review">
+      <h2>Human Review Gate</h2>
+      <p><strong>I assumed:</strong> The staging environment is the target, successful login redirects to the dashboard, and existing login methods should continue to work.</p>
+      <p><strong>I could not confirm:</strong> Provider list, platform matrix, exact error messages, identity/role rules, performance and localization expectations, accessibility target, rollback behavior, or test-account setup. Components, labels, fix versions, links, and attachments were not provided in the Jira response.</p>
+      <p><strong>Open questions blocking sign-off:</strong> Confirm the gaps in Section 2, especially supported IdPs/platforms, test identities, failure/recovery behavior, security protocol expectations, and acceptance oracles.</p>
+      <p><strong>Approve or edit this draft before proceeding.</strong> No test cases or automation are included or authorized by this draft.</p>
+    </section>
+
+    <footer class="footer">Nagarro | KAN-4 | Draft for human review | Prepared 2026-10-28</footer>
+  </main>
+</body>
+</html>

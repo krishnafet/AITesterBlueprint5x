@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Test plan for separating the web and mySchneider applications from one monorepo into two repositories.">
+  <title>Test Plan | Web and mySchneider Repository Separation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202a35;
+      --muted: #586674;
+      --paper: #fff;
+      --canvas: #eef2f3;
+      --rule: #d8e0e2;
+      --teal: #087e83;
+      --teal-pale: #e5f4f2;
+      --orange: #ba5427;
+      --orange-pale: #fff0e8;
+      --table-head: #e9eff0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 36px 18px;
+      background: var(--canvas);
+      color: var(--ink);
+      font: 15px/1.62 "Aptos", "Segoe UI", sans-serif;
+    }
+    .document {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 58px 68px 70px;
+      background: var(--paper);
+      box-shadow: 0 12px 40px rgba(32, 42, 53, .10);
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, h4 { line-height: 1.25; }
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: 36px;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin: 14px 0 28px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+    .meta, .contents, .callout {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+    }
+    .meta { margin: 26px 0 38px; }
+    .meta table, table { width: 100%; border-collapse: collapse; }
+    .meta th, .meta td, th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--rule);
+      text-align: left;
+      vertical-align: top;
+    }
+    .meta tr:last-child th, .meta tr:last-child td { border-bottom: 0; }
+    .meta th { width: 29%; color: var(--muted); font-weight: 600; }
+    .contents {
+      margin: 0 0 40px;
+      padding: 20px 24px;
+      background: #f7f9f8;
+    }
+    .contents h2 { margin: 0 0 12px; font-size: 18px; }
+    .contents ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 36px; }
+    .contents li { break-inside: avoid; padding: 2px 0; }
+    a { color: #075f67; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    section { margin: 38px 0 0; }
+    h2 {
+      margin: 0 0 18px;
+      padding: 0 0 10px;
+      border-bottom: 2px solid var(--teal);
+      font-size: 23px;
+    }
+    h3 { margin: 25px 0 10px; font-size: 18px; }
+    h4 { margin: 20px 0 8px; font-size: 15px; }
+    p { margin: 8px 0 12px; }
+    ul, ol { padding-left: 23px; }
+    li { margin: 4px 0; }
+    th { background: var(--table-head); font-weight: 700; }
+    tr:last-child td { border-bottom: 0; }
+    .callout {
+      margin: 16px 0;
+      padding: 13px 16px;
+      border-left: 4px solid var(--orange);
+      background: var(--orange-pale);
+    }
+    .tbc {
+      color: #71401f;
+      font-weight: 600;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 3px;
+      background: var(--teal-pale);
+      color: #075f67;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .small { color: var(--muted); font-size: 13px; }
+    footer {
+      margin-top: 48px;
+      padding-top: 14px;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    @media (max-width: 700px) {
+      body { padding: 0; }
+      .document { padding: 34px 22px 44px; }
+      h1 { font-size: 29px; }
+      .contents ol { columns: 1; }
+      .meta th { width: 38%; }
+      table { font-size: 13px; }
+      th, td { padding: 8px; }
+    }
+    @media print {
+      @page { size: A4; margin: 18mm 16mm; }
+      body { padding: 0; background: #fff; font-size: 10.5pt; }
+      .document { max-width: none; padding: 0; box-shadow: none; }
+      .contents, .meta, .callout, table { break-inside: avoid; }
+      h2, h3, h4 { break-after: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="document">
+    <header>
+      <p class="eyebrow">Test Plan · Repository Separation</p>
+      <h1>Web and mySchneider Repository Separation</h1>
+      <p class="subtitle">Verification plan for moving two applications from one monorepo into separate repositories.</p>
+      <div class="meta">
+        <table aria-label="Document details">
+          <tbody>
+            <tr><th scope="row">Document status</th><td>Draft for project review</td></tr>
+            <tr><th scope="row">Version / date</th><td>1.0 / 19 October 2026</td></tr>
+            <tr><th scope="row">Project scope</th><td>Separate repositories for the web application and the mySchneider application, currently maintained in one monorepo.</td></tr>
+            <tr><th scope="row">Prepared for</th><td>Project team <span class="tbc">(owner and reviewers to be confirmed)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </header>
+
+    <nav class="contents" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#change-history">Document Change History</a></li>
+        <li><a href="#introduction">1. Introduction</a></li>
+        <li><a href="#strategy">2. Test Strategy</a></li>
+        <li><a href="#approach">3. Test Approach</a></li>
+        <li><a href="#bugs">4. Bug Tracking Process</a></li>
+        <li><a href="#assumptions">5. Assumptions and Dependencies</a></li>
+      </ol>
+    </nav>
+
+    <section id="change-history">
+      <h2>Document Change History</h2>
+      <table>
+        <thead><tr><th>Version</th><th>Date</th><th>Change</th><th>Author</th></tr></thead>
+        <tbody><tr><td>1.0</td><td>19 October 2026</td><td>Initial test plan for separating the web and mySchneider application repositories.</td><td>Project team <span class="tbc">(to be confirmed)</span></td></tr></tbody>
+      </table>
+    </section>
+
+    <section id="introduction">
+      <h2>1. Introduction</h2>
+      <h3>1.1. Purpose</h3>
+      <p>Define the testing approach for the project scope change: the web and mySchneider applications will move from a shared monorepo into two separate repositories.</p>
+      <h3>1.2. Objective</h3>
+      <p>Verify that each application is available from its intended repository and that the separation has not disrupted the application code, required shared components, build and delivery workflows, or interactions between the applications.</p>
+      <h3>1.3. Scope of testing</h3>
+      <h4>1.3.1. In Scope testing</h4>
+      <ul>
+        <li>Confirm that the web application content is present in its designated repository and the mySchneider application content is present in its designated repository.</li>
+        <li>Check repository contents for missing, duplicated, or incorrectly assigned application code and configuration relevant to the separation.</li>
+        <li>Verify that each repository can be checked out and that its configured build, automated checks, and deployment workflow can run independently, where applicable.</li>
+        <li>Validate references to shared code, packages, configuration, and other dependencies after separation.</li>
+        <li>Run agreed application smoke and regression tests after the repository move.</li>
+        <li>Verify any integrations between the web and mySchneider applications that are affected by the repository split.</li>
+        <li>Confirm the agreed repository access and contribution workflows for each application.</li>
+      </ul>
+      <h4>1.3.2. Out of scope testing</h4>
+      <ul>
+        <li>New application features or changes unrelated to the repository separation.</li>
+        <li>Changes to application behavior not required to complete the separation.</li>
+        <li>Infrastructure, platform, or external-system changes not identified as affected by the repository split.</li>
+      </ul>
+      <p class="small">Any additional scope or exclusions must be confirmed by the project team before execution.</p>
+      <h3>1.4. Deliverables</h3>
+      <ul>
+        <li>Approved test plan and agreed test scope.</li>
+        <li>Test cases and execution evidence for repository separation checks.</li>
+        <li>Build, automated-check, smoke, and regression results for each application, where applicable.</li>
+        <li>Defect records and a test completion summary with open risks or dependencies.</li>
+      </ul>
+    </section>
+
+    <section id="strategy">
+      <h2>2. Test Strategy</h2>
+      <h3>2.1. Testing Levels</h3>
+      <ul>
+        <li><strong>Repository and configuration verification:</strong> check application ownership, repository contents, history or required files, configuration, and dependency references.</li>
+        <li><strong>Build and automated-check verification:</strong> run the configured build and automated checks independently for each repository.</li>
+        <li><strong>Application testing:</strong> run agreed smoke and regression tests for web and mySchneider after the move.</li>
+        <li><strong>Integration testing:</strong> verify affected interactions between the applications and any identified shared components.</li>
+      </ul>
+      <p class="small">The specific frameworks, commands, and test suites are <span class="tbc">to be confirmed</span>.</p>
+      <h3>2.2. Entry and Exit Criteria</h3>
+      <h4>2.2.1. Entry Criteria</h4>
+      <ul>
+        <li>Both destination repositories are available to the testing team.</li>
+        <li>The intended mapping of monorepo content to the web and mySchneider repositories is agreed.</li>
+        <li>Required branches, access, build instructions, environments, and test data are available or their gaps are recorded.</li>
+        <li>The baseline application versions and the comparison method are identified.</li>
+      </ul>
+      <p class="small">Repository URLs, branch names, baseline identifiers, and approval owners: <span class="tbc">to be confirmed</span>.</p>
+      <h4>2.2.2. Exit Criteria</h4>
+      <ul>
+        <li>Planned repository separation checks and agreed application tests have execution results recorded.</li>
+        <li>Build and automated-check results are recorded separately for each repository, where those workflows exist.</li>
+        <li>Defects are documented, triaged, and dispositioned by the project team.</li>
+        <li>Known deviations, unresolved dependencies, and residual risks are communicated to the designated approver.</li>
+      </ul>
+      <p class="small">Required pass rates, defect thresholds, and formal sign-off authority: <span class="tbc">to be confirmed</span>.</p>
+      <h3>2.3. Suspension and Resumption Criteria</h3>
+      <h4>2.3.1. Suspension Criteria</h4>
+      <ul>
+        <li>A required repository, environment, build workflow, or dependency is unavailable and prevents meaningful execution.</li>
+        <li>Application content or repository mapping is incomplete or materially unclear.</li>
+        <li>A blocking defect prevents the planned test activities from continuing.</li>
+      </ul>
+      <h4>2.3.2. Resumption Criteria</h4>
+      <ul>
+        <li>The blocking access, environment, mapping, or dependency issue has been resolved or an agreed workaround is available.</li>
+        <li>The affected repository or application is ready for the suspended tests to resume.</li>
+        <li>Impact on previously completed results has been assessed and any required retesting is identified.</li>
+      </ul>
+      <h3>2.4. System Acceptance Criteria</h3>
+      <p>Acceptance criteria and approval authority must be agreed before test execution. The project should confirm that the application contents are correctly separated, the required workflows operate for both repositories, identified integrations and shared dependencies remain usable, and agreed application tests pass. Any numerical thresholds or mandatory sign-offs are <span class="tbc">to be confirmed</span>.</p>
+      <h3>2.5. Hardware</h3>
+      <p>No hardware requirements were provided. Test devices or infrastructure requirements, if applicable, are <span class="tbc">to be confirmed</span>.</p>
+      <h3>2.6. Environment details</h3>
+      <p>Environment names, URLs, configuration, deployment targets, and availability are <span class="tbc">to be confirmed</span>. Record any environment differences between baseline and post-separation execution.</p>
+      <h3>2.7. Testing tools</h3>
+      <p>Repository hosting, CI/CD, test management, automation, and defect tracking tools were not specified and are <span class="tbc">to be confirmed</span>.</p>
+      <h3>2.8. Team composition</h3>
+      <p>Test lead, application representatives, repository or build owners, approvers, and other participating roles are <span class="tbc">to be confirmed</span>.</p>
+    </section>
+
+    <section id="approach">
+      <h2>3. Test Approach</h2>
+      <h3>3.1. Baseline Comparison Approach</h3>
+      <p>Use the current monorepo state as the baseline and compare it with the resulting web and mySchneider repositories. Compare the application source and required configuration, then execute equivalent agreed checks against the baseline and separated versions where the same environment and inputs are available.</p>
+      <p class="small">Baseline commit or release, comparison method, and the handling of intentional changes: <span class="tbc">to be confirmed</span>.</p>
+      <h3>3.2. Area of Comparison</h3>
+      <ul>
+        <li>Application source and required repository files are assigned to the correct destination.</li>
+        <li>Required commit history or other migration records are present if preservation is a project requirement.</li>
+        <li>Build scripts, configuration, dependency manifests, and automated checks remain usable in each repository.</li>
+        <li>References to shared components and cross-application integrations resolve correctly.</li>
+        <li>Repository permissions and contribution workflows match the agreed access model.</li>
+        <li>Application behavior remains consistent for the agreed smoke and regression coverage.</li>
+      </ul>
+      <h3>3.3. Comparison Conditions</h3>
+      <ul>
+        <li>Record the source baseline and destination repository revisions used for each run.</li>
+        <li>Use equivalent inputs, test data, environment configuration, and test coverage when comparing baseline and separated versions.</li>
+        <li>Record any differences that are intentional or caused by environment, dependency, or configuration changes.</li>
+        <li>Do not interpret environment or data differences as repository-separation regressions without investigation.</li>
+      </ul>
+      <h3>3.4. Test Design</h3>
+      <p>Design tests around the migration mapping and the separation risks. Include checks for correct application ownership, required files and configuration, independent repository checkout and build, dependency resolution, relevant integration points, access, and application smoke/regression behavior. Link each test to the relevant requirement or migration decision once these are available.</p>
+      <h3>3.5. Test Data Strategy</h3>
+      <p>Use the test data already approved for the agreed application smoke and regression tests. Required data, test accounts, and data refresh or masking rules are <span class="tbc">to be confirmed</span>.</p>
+      <h4>3.5.1. Test Data Management Measures:</h4>
+      <ul>
+        <li>Identify the data and accounts needed to execute the agreed tests for both applications.</li>
+        <li>Record data dependencies and ensure test data is available in the selected environments before execution.</li>
+        <li>Follow the project's existing data handling and access requirements; details are <span class="tbc">to be confirmed</span>.</li>
+      </ul>
+      <h3>3.6. Test Execution</h3>
+      <p>Capture the repository revision, environment, test identifier, result, evidence, and linked defect for each execution. Execute and report web and mySchneider results independently, then run the agreed cross-application checks.</p>
+      <h4>3.6.1. Baseline Execution</h4>
+      <ol>
+        <li>Identify and record the approved monorepo baseline revision.</li>
+        <li>Run the agreed baseline build, automated checks, and application tests where available.</li>
+        <li>Record results, environment details, and known baseline failures for comparison.</li>
+      </ol>
+      <h4>3.6.2. Dedicated Repository Execution</h4>
+      <ol>
+        <li>Check out the web repository and verify its intended content, configuration, and required files.</li>
+        <li>Run the web repository's configured build and automated checks; record results and defects.</li>
+        <li>Repeat the equivalent checks independently for the mySchneider repository.</li>
+        <li>Verify required shared dependencies and affected integrations using the agreed setup.</li>
+        <li>Compare outcomes with the recorded baseline and investigate differences.</li>
+      </ol>
+      <h4>3.6.3. Functional Test case execution Process</h4>
+      <ol>
+        <li>Confirm test prerequisites, environment, test data, and application revision.</li>
+        <li>Execute the agreed smoke or functional test cases for the relevant application.</li>
+        <li>Record actual results and evidence; log unexpected behavior as a defect.</li>
+        <li>Retest fixes and document the final result.</li>
+      </ol>
+      <h4>3.6.4. Regression Test case execution Process</h4>
+      <ol>
+        <li>Select the existing regression coverage agreed for web and mySchneider.</li>
+        <li>Execute it against the separated repository builds using comparable conditions to the baseline where possible.</li>
+        <li>Record pass, fail, blocked, and not-run cases, including the reason for any exception.</li>
+        <li>Assess failures for relation to the repository split and report unresolved impact and risk.</li>
+      </ol>
+    </section>
+
+    <section id="bugs">
+      <h2>4. Bug Tracking Process</h2>
+      <h3>4.1. Bug Tracking tool</h3>
+      <p>Use the project's designated defect tracking tool. Tool and project workspace are <span class="tbc">to be confirmed</span>.</p>
+      <h4>4.1.1. Priority of Bugs</h4>
+      <p>Assign priority using the project's existing definitions and triage process. Definitions and decision owner are <span class="tbc">to be confirmed</span>.</p>
+      <h4>4.1.2. Severity of Bugs</h4>
+      <p>Assign severity using the project's existing definitions. Definitions and decision owner are <span class="tbc">to be confirmed</span>.</p>
+      <h3>4.2. Bug Reporting</h3>
+      <p>For each defect, record a concise title, affected application and repository, repository revision, environment, preconditions, reproduction steps, expected and actual results, supporting evidence, severity and priority per project convention, and related test case. Identify whether the issue is a migration regression, a pre-existing baseline issue, or still under investigation.</p>
+    </section>
+
+    <section id="assumptions">
+      <h2>5. Assumptions and Dependencies</h2>
+      <h3>5.1. Assumptions</h3>
+      <ul>
+        <li>The stated scope is separation of the existing web and mySchneider applications from one monorepo into two repositories.</li>
+        <li>Application functionality is not intentionally changed as part of this repository separation; confirm this with the project team.</li>
+        <li>Existing application tests and build workflows, if available, can be identified and used or adapted for post-separation verification.</li>
+        <li>Unspecified repository, tooling, environment, ownership, and acceptance details remain open and require confirmation.</li>
+      </ul>
+      <h3>5.2. Dependencies</h3>
+      <h4>5.2.1. Repository and Source-Code Dependencies</h4>
+      <p>Availability of both destination repositories; agreed mapping of monorepo content; required access; and a decision on whether commit history, tags, or branches must be retained.</p>
+      <h4>5.2.2. Build and CI/CD Dependencies</h4>
+      <p>Build instructions, required secrets or variables, automated checks, and pipeline configuration needed to execute workflows independently in both repositories. Exact tools and pipeline owners are <span class="tbc">to be confirmed</span>.</p>
+      <h4>5.2.3. Shared and External Component Dependencies</h4>
+      <p>Identification and continued availability of shared code, packages, services, or configuration referenced by either application. The dependency inventory and ownership are <span class="tbc">to be confirmed</span>.</p>
+      <h4>5.2.4. Environment Dependencies</h4>
+      <p>Access to the required test environments, deployment targets, configuration, and credentials through the project's approved process. Environment details are <span class="tbc">to be confirmed</span>.</p>
+      <h4>5.2.5. Integration Dependencies</h4>
+      <p>Identification of interactions between web and mySchneider, and any endpoints, contracts, or deployment coordination affected by their residing in separate repositories. Integration owners and test setup are <span class="tbc">to be confirmed</span>.</p>
+      <h4>5.2.6. Test Data and User Dependencies</h4>
+      <p>Availability of approved test data and the accounts or roles required for the agreed application tests. Data owners and access requirements are <span class="tbc">to be confirmed</span>.</p>
+      <h4>5.2.7. Team and Process Dependencies</h4>
+      <p>Availability of repository and application owners, testers, build or pipeline support, defect triage participants, and an authorized approver. Named roles, schedule, and sign-off process are <span class="tbc">to be confirmed</span>.</p>
+      <div class="callout"><strong>Open project inputs:</strong> Confirm repository names and URLs, migration approach and baseline revision, required history retention, build and CI/CD tooling, environments, shared dependency inventory, test suites and data, defect tracking conventions, acceptance thresholds, owners, and approval process.</div>
+    </section>
+
+    <footer>
+      Draft prepared from the project scope information provided: web and mySchneider currently share one monorepo and are to be separated into two repositories. Items marked “to be confirmed” require project-team input.
+    </footer>
+  </main>
+</body>
+</html>

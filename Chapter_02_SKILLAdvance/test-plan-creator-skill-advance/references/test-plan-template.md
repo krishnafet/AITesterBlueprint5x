@@ -1,0 +1,62 @@
+# Test Plan — <JIRA-KEY>: <title>
+
+> Status: **DRAFT — pending human review.** Not approved until a QA owner signs off.
+
+## 1. Scope & Objectives
+- **Purpose:**
+- **Objective:**
+- **Scope of testing:** what "tested" means for this ticket.
+- **In Scope testing:**
+- **Out of scope testing:**
+- **Deliverables:**
+
+## 2. Gaps & Questions for the author
+| # | Area | Finding (⚠️/❌) | Question to author |
+|---|------|----------------|--------------------|
+| 1 |      |                |                    |
+
+## 3. Test Scenarios
+| ID | Priority | Type (pos/neg/boundary) | Scenario | Maps to (AC / gap) |
+|----|----------|-------------------------|----------|--------------------|
+| TS-1 | P0 |                       |          |                    |
+
+## 4. Test Data & Environment
+- **Data:**
+- **Environment / flags:**
+- **Roles / permissions:**
+
+## 5. Risks & Assumptions
+- **Assumptions made:**
+- **Risks:**
+
+## 6. Entry / Exit criteria
+- **Entry:**
+- **Exit:**
+
+## 7. Test Strategy
+- **Testing Levels	:**
+- **System Acceptance Criteria:**
+- **Team composition:**
+
+## 8. Test Approach
+- **Test Design	:**
+- **Test Data Strategy:**
+- **Test Data Management Measure:**
+
+## 9. Bug Tracking Process
+- **Bug Tracking tool:**
+- **Priority of Bugs:**
+- **Severity of Bugs:**
+- **Bug Reporting:**
+
+## 10. Assumptions and Dependencies
+- **Assumptions:**
+- **Dependencies:**
+
+
+---
+## HUMAN REVIEW GATE
+- **I assumed:** …
+- **I could not confirm:** …
+- **Open questions blocking sign-off:** …
+- **Approve, or edit, before I write test cases / automation.**
