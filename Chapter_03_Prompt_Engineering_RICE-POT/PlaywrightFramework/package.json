@@ -1,0 +1,14 @@
+{
+  "name": "playwright-login-framework",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "@playwright/test": "^1.56.1",
+    "typescript": "^5.9.3"
+  }
+}
