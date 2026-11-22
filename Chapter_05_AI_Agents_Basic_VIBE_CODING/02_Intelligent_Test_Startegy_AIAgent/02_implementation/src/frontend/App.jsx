@@ -12,6 +12,19 @@ async function request(path, body) {
   return result;
 }
 
+async function responseError(response, fallback) {
+  const body = await response.text();
+  if (body) {
+    try {
+      const parsed = JSON.parse(body);
+      if (parsed.error) return parsed.error;
+    } catch {
+      return `${fallback} (HTTP ${response.status}).`;
+    }
+  }
+  return `${fallback} (HTTP ${response.status}).`;
+}
+
 const initialJira = { baseUrl: '', email: '', token: '' };
 const initialAi = { groqApiKey: '', groqModel: '', ollamaBaseUrl: '', ollamaModel: '' };
 
@@ -69,8 +82,10 @@ export default function App() {
         body: JSON.stringify({ strategy, projectName }),
       });
       if (!response.ok) {
-        const result = await response.json();
-        throw new Error(result.error || 'Word document export failed.');
+        throw new Error(await responseError(response, 'Word document export failed'));
+      }
+      if (!response.headers.get('content-type')?.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+        throw new Error(await responseError(response, 'The server did not return a Word document'));
       }
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);

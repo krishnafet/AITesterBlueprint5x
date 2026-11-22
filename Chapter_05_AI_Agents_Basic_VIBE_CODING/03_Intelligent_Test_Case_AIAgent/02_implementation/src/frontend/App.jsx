@@ -16,6 +16,19 @@ const emptyJira = { baseUrl: '', email: '', token: '' };
 const emptyAI = { groqApiKey: '', groqModel: '', ollamaBaseUrl: '', ollamaModel: '' };
 const list = (items) => items?.length ? items.join('; ') : 'Insufficient information to determine.';
 
+async function responseError(response, fallback) {
+  const body = await response.text();
+  if (body) {
+    try {
+      const parsed = JSON.parse(body);
+      if (parsed.error) return parsed.error;
+    } catch {
+      return `${fallback} (HTTP ${response.status}).`;
+    }
+  }
+  return `${fallback} (HTTP ${response.status}).`;
+}
+
 export default function App() {
   const [page, setPage] = useState('main');
   const [references, setReferences] = useState('');
@@ -78,8 +91,10 @@ export default function App() {
         body: JSON.stringify({ projectName, testCases: result.testCases }),
       });
       if (!response.ok) {
-        const body = await response.json();
-        throw new Error(body.error || 'Word document export failed.');
+        throw new Error(await responseError(response, 'Word document export failed'));
+      }
+      if (!response.headers.get('content-type')?.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+        throw new Error(await responseError(response, 'The server did not return a Word document'));
       }
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);

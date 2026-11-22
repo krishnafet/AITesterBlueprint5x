@@ -2,6 +2,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "functions": {
+    "api/test-strategy/docx.js": {
+      "maxDuration": 60
+    },
     "api/[...path].js": {
       "maxDuration": 60
     }
