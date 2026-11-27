@@ -1,0 +1,258 @@
+{
+  "name": "08_Bug_Triage_AIAgent_UpdateComment_With_Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "694c5e99-8b17-42e3-9812-5c5279535c5b",
+              "name": "Issue_Key",
+              "value": "={{ $json.issue.key }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -272,
+        48
+      ],
+      "id": "dad8e345-7445-4566-843d-e23cad79414c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "issueKey": "={{ $json.Issue_Key }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jira",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "b2798772-0997-4a06-aa8b-644db60b2275",
+      "name": "Get an issue",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "BO5NXnjVdPMHFRbe",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Issue Key : {{ $json.key }}\nTitle : {{ $json.fields.summary }}\nDescription :{{ $json.fields.description }}",
+        "options": {
+          "systemMessage": "Based on Issue Key , Title and Description give me the analysis and provide the bug triaged short comment\n\nResponse  in JSON\n\nSeverity\nPriority\nComments\n\nMake sure the comments are simple text and dont add anything like /n , {},[] and more . Give me normal text without special characters."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        64,
+        0
+      ],
+      "id": "1bf30541-352f-4914-8163-f6888e0ee7b9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://testingpracticekk.atlassian.net/rest/api/3/issue/{{ $json.IssueKey }}/comment",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "jiraSoftwareCloudApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"body\": {\n    \"type\": \"doc\",\n    \"version\": 1,\n    \"content\": [\n      {\n        \"type\": \"paragraph\",\n        \"content\": [\n          {\n            \"type\": \"text\",\n            \"text\": {{ $json.Comment }}\n          }\n        ]\n      }\n    ]\n  }\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        608,
+        96
+      ],
+      "id": "634bee03-2a3b-48f4-8e97-1b34951015c6",
+      "name": "Update Jira Comment",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "BO5NXnjVdPMHFRbe",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d31dd86e-b584-4621-a154-5fcfac9fcdf6",
+              "name": "IssueKey",
+              "value": "={{ $('Edit Fields').item.json.Issue_Key }}",
+              "type": "string"
+            },
+            {
+              "id": "112507b3-a96b-4be7-b7b8-acada879ddef",
+              "name": "Comment",
+              "value": "={{ $json.output.parseJson().Comments.toJsonString()}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        400,
+        0
+      ],
+      "id": "61bb8a5e-41d9-4f00-a0bd-82ec1f9234df",
+      "name": "Get Comment"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        224
+      ],
+      "id": "2326ef51-409f-4fab-8f6e-b87dcefc4f5d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "events": [
+          "jira:issue_created"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jiraTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -512,
+        32
+      ],
+      "id": "16e876d4-283e-4327-acf5-246b6ca20720",
+      "name": "Jira Trigger",
+      "webhookId": "ae6b7ebd-54df-4800-baa8-99195e55f2f4",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "BO5NXnjVdPMHFRbe",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get an issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an issue": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Get Comment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Comment": {
+      "main": [
+        [
+          {
+            "node": "Update Jira Comment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jira Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "91a38445-a469-42b8-9e74-c5cfbce9d620",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b25aa77ee8ae207d3489383be380ab6f11501c0c45619d4f8ebd6d6245bdeeb9"
+  },
+  "nodeGroups": [],
+  "id": "aiisWIKsPgSy0yqu",
+  "tags": []
+}
